@@ -1,0 +1,4 @@
+将采样数据保存到S_data文件夹中
+生成的参数文件放在inverse optimization文件下
+执行data_handling文件，得到新的数据
+
