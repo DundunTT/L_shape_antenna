@@ -50,7 +50,7 @@ if __name__ == '__main__':
                                nn.Linear(10,100),nn.Softplus(),
                                nn.Linear(100, 100), nn.Softplus(),
                                nn.Linear(100, 10), nn.Softplus(),
-                               nn.Linear(4,output_dim))
+                               nn.Linear(10,output_dim))
 
     data = pd.read_csv(path,index_col=False,header=None,dtype=np.float32)
     data_total = np.array(data)
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     #划分数据
     data_input = data_total[:,1:5]
     data_output = data_total[:,5]
-    train_input, test_input, train_output, test_output = train_test_split(data_input,data_output,test_size=0.2)
+    train_input, test_input, train_output, test_output = train_test_split(data_input,data_output,test_size=0.5)
 
     #转化为tensor并进行归一化
     train_input = torch.from_numpy(train_input).type(torch.float32)
@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
     #转化为dataloader
     train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True)
-    test_loader = torch.utils.data.DataLoader(test, batch_size=20, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(test, batch_size=500, shuffle=True)
 
     loss_func = nn.MSELoss()
     learning_rate = 0.05
