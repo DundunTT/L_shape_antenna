@@ -1,9 +1,10 @@
-#深度神经网络拟合数据
+#支持向量机回归作为替代模型
+#使用MAE作为损失函数查看训练集表现
 import pandas as pd
 import numpy as np
 from sklearn import svm
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
+
 
 if __name__ == '__main__':
     #输入四个参数，输出1个s参数

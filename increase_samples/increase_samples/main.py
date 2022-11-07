@@ -1,4 +1,5 @@
 #深度神经网络拟合数据
+#使用MSE作为训练时的损失函数，MAE作为验证集的损失函数
 import pandas as pd
 import numpy as np
 import torch.nn as nn
@@ -84,7 +85,9 @@ if __name__ == '__main__':
     train_loader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True)
     test_loader = torch.utils.data.DataLoader(test, batch_size=500, shuffle=True)
 
-    loss_func = nn.MSELoss()
+    loss_func = nn.MSELoss()#训练集损失函数
+    test_loss_func = nn.L1Loss(reduce='mean')#验证集的评价函数
+
     learning_rate = 0.05
     optimizer = torch.optim.Adam(ANN_model.parameters(), lr=learning_rate)
     test_loss = []
@@ -92,7 +95,7 @@ if __name__ == '__main__':
 
     for i in range(epochs):
         train_loop(train_loader, ANN_model, loss_func, optimizer, train_loss)
-        test_loop(test_loader, ANN_model, loss_func, test_loss)
+        test_loop(test_loader, ANN_model, test_loss_func, test_loss)
         print('---------------------------------')
         print('epoch:%s'%i)
 
