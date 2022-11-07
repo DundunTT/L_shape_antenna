@@ -28,11 +28,11 @@ if __name__ == '__main__':
     #检查
     pred = SVM_model.predict(test_input)
 
-    loss = 0
+    loss = []
     for i in range(len(test_input)):
-        print(test_output[i],'------',pred[i])
-        loss = loss + abs(test_output[i] - pred[i])
-
+        #print(test_output[i],'------',pred[i])
+        loss.append(abs(test_output[i]-pred[i]))
+    print(max(loss))
     #绘图
     #px = np.array(range(len(test_loss)))
     #ptrain_y = np.array(train_loss)
