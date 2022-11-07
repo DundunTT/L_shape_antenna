@@ -33,7 +33,7 @@ def test_loop(dataloader, model, loss_fn, test_loss):
         for X, y in dataloader:
             y = torch.reshape(y,(-1, 1))
             pred = model(X)
-            loss = loss_fn(pred,y)
+            loss = loss_fn(pred,y)#计算MAE
             test_loss.append(loss)
             #显示损失：
             print('test_loss:',loss)
@@ -110,13 +110,7 @@ if __name__ == '__main__':
     plt.plot(px,ptest_y,color='green')
     plt.show()
 
-    #计算误差
-    loss = []
-    for i in range(len(test_input)):
-        pred = ANN_model(test_input[i])
-        loss.append(abs(pred-test_output[i]))
-
-    print('max loss is ：',max(loss))
+    #绘图：测试集上
 
 
 
