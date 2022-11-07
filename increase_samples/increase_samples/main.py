@@ -9,10 +9,11 @@ import matplotlib.pyplot as plt
 #训练过程函数
 def train_loop(dataloader, model, loss_fn, optimizer, train_loss):
     size = len(dataloader.dataset)
+    num_batchsize = len(dataloader)
     for batch, (X, y) in enumerate(dataloader):
         # Compute prediction and loss
         pred = model(X)
-        y = torch.reshape(y,(50,1))
+        y = torch.reshape(y,(-1 ,1))
         loss = loss_fn(pred, y)
 
         # Backpropagation
@@ -20,13 +21,12 @@ def train_loop(dataloader, model, loss_fn, optimizer, train_loss):
         loss.backward()
         optimizer.step()
 
-        if batch % 50 == 0:
+        if batch % num_batchsize == 0:
             train_loss.append(loss)
 
 #测试过程函数
 def test_loop(dataloader, model, loss_fn, test_loss):
     size = len(dataloader.dataset)
-    num_batches = len(dataloader)
 
     with torch.no_grad():
         for X, y in dataloader:
@@ -47,10 +47,10 @@ if __name__ == '__main__':
 
     #模型:两个隐藏层
     ANN_model = nn.Sequential( nn.Linear(input_dim,10), nn.Tanh(),
-                               nn.Linear(10,100),nn.Softplus(),
-                               nn.Linear(100, 100), nn.Softplus(),
-                               nn.Linear(100, 10), nn.Softplus(),
-                               nn.Linear(10,output_dim))
+                               nn.Linear(10,120),nn.Softplus(),
+                               nn.Linear(120, 140), nn.Softplus(),
+                               nn.Linear(140, 50), nn.Softplus(),
+                               nn.Linear(50,output_dim))
 
     data = pd.read_csv(path,index_col=False,header=None,dtype=np.float32)
     data_total = np.array(data)
@@ -73,8 +73,8 @@ if __name__ == '__main__':
     test_input = torch.nn.functional.normalize(test_input,p=2,dim=1)
 
     # batch size和迭代次数
-    batch_size = 50
-    epochs = 200
+    batch_size = 40
+    epochs = 2000
 
     #合并
     train = torch.utils.data.TensorDataset(train_input, train_output)
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     print("Done!")
 
 
-    #绘图
+    #绘图:随着迭代，验证集误差图像
     px = np.array(range(len(test_loss)))
     #ptrain_y = np.array(train_loss)
     ptest_y = np.array(test_loss)
@@ -107,7 +107,13 @@ if __name__ == '__main__':
     plt.plot(px,ptest_y,color='green')
     plt.show()
 
+    #计算误差
+    loss = []
+    for i in range(len(test_input)):
+        pred = ANN_model(test_input[i])
+        loss.append(abs(pred-test_output[i]))
 
+    print('max loss is ：',max(loss))
 
 
 
