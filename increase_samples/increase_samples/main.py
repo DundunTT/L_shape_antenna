@@ -47,8 +47,8 @@ if __name__ == '__main__':
 
     #模型:两个隐藏层
     ANN_model = nn.Sequential( nn.Linear(input_dim,10), nn.Tanh(),
-                               nn.Linear(10,100),nn.Softplus(),
-                               nn.Linear(100, 100), nn.Softplus(),
+                               nn.Linear(10,120),nn.Softplus(),
+                               nn.Linear(120, 100), nn.Softplus(),
                                nn.Linear(100, 10), nn.Softplus(),
                                nn.Linear(10,output_dim))
 
